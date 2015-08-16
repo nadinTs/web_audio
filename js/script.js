@@ -18,7 +18,7 @@
     console.log(bufferLength);
     var dataArray = new Uint8Array(bufferLength);
 
-    var source = audioCtx.createBufferSource();
+    var source = null;
     var volume = audioCtx.createGain();
 
 
@@ -43,6 +43,7 @@
                     console.log('audio decoded.');
                     file_name = file.name;
                     statusText.innerHTML = 'Click play to start.';
+                    source = audioCtx.createBufferSource();
                     source.buffer = buffer;
                     source.connect(analyser);
                     analyser.connect(volume);
@@ -87,18 +88,24 @@
 
     playButton.addEventListener("click", function(){
         draw();
-        source.start(0);
-        statusText.innerHTML = file_name;
+        if (source) {
+            source.start(0);
+            statusText.innerHTML = file_name;
+        }
     });
 
     stopButton.addEventListener("click", function(){
-        source.stop(0);
+        if (source) {
+            source.stop(0);
+            statusText.innerHTML = "Please select file to play";
+            source = null;
+        }
     });
 
     volumeSlider.addEventListener("change", function(){
-       console.log(volumeSlider.value);
+        console.log(volumeSlider.value);
         volume.gain.value = volumeSlider.value;
 
     });
-    
+
 })();
