@@ -1,4 +1,6 @@
 (function(){
+
+
     var player = document.querySelector("#player");
     var playButton = document.querySelector(".play");
     var stopButton = document.querySelector(".stop");
@@ -9,28 +11,16 @@
     var upload_list = document.querySelector('.upload_list');
     var audio_item = document.createElement('p');
 
-    var context = new AudioContext();
-    var source = context.createBufferSource();
-    var volume = context.createGain();
+    var audioCtx = new AudioContext();
+    var analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 256;
+    var bufferLength = analyser.frequencyBinCount;
+    console.log(bufferLength);
+    var dataArray = new Uint8Array(bufferLength);
 
+    var source = audioCtx.createBufferSource();
+    var volume = audioCtx.createGain();
 
-    //var request = new XMLHttpRequest();
-    //request.open('GET', url, true);
-    //request.responseType = 'arraybuffer';
-    //
-    //request.onload = function () {
-    //    console.log('audio loaded');
-    //    statusText.innerHTML = 'Decoding audio, please wait...';
-    //    context.decodeAudioData(request.response, function (buffer) {
-    //        console.log('audio decoded.');
-    //        statusText.innerHTML = 'Click play to start.';
-    //        source.buffer = buffer;
-    //        source.connect(volume);
-    //        volume.connect(context.destination);
-    //    });
-    //};
-    //request.send();
-    //console.log('start loading audio from ' + url);
 
     player.querySelector('#upload_audio').addEventListener('change', function(){
        var files = this.files;
@@ -51,13 +41,14 @@
                 audio_item.innerHTML = file.name;
                 statusText.innerHTML = 'Decoding audio, please wait...';
 
-                context.decodeAudioData(event.target.result, function (buffer) {
+                audioCtx.decodeAudioData(event.target.result, function (buffer) {
                     console.log('audio decoded.');
 
                     statusText.innerHTML = 'Click play to start.';
                     source.buffer = buffer;
-                    source.connect(volume);
-                    volume.connect(context.destination);
+                    source.connect(analyser);
+                    analyser.connect(volume);
+                    volume.connect(audioCtx.destination);
                 });
 
             });
@@ -69,9 +60,35 @@
         }
     }
 
+    var canvas = document.querySelector('#visual');
+    var canvasCtx = canvas.getContext('2d');
+    var WIDTH = 300;
+    var HEIGHT = 150;
 
+    function draw() {
+        drawVisual = requestAnimationFrame(draw);
+
+        analyser.getByteFrequencyData(dataArray);
+
+        canvasCtx.fillStyle = 'rgb(0, 0, 0)';
+        canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+
+        var barWidth = (WIDTH / bufferLength) * 2.5;
+        var barHeight;
+        var x = 0;
+
+        for(var i = 0; i < bufferLength; i++) {
+            barHeight = dataArray[i];
+
+            canvasCtx.fillStyle = 'rgb(' + (barHeight+100) + ',50,50)';
+            canvasCtx.fillRect(x,HEIGHT-barHeight/2,barWidth,barHeight);
+
+            x += barWidth + 1;
+        }
+    }
 
     playButton.addEventListener("click", function(){
+        draw();
         source.start(0);
     });
 

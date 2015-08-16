@@ -11,10 +11,11 @@ div {
     margin:  50px 20px;
 }
 
-.upload_list {
+.visual {
     display: block;
     width: 500px;
-    height: 100px;
-    overflow: scroll;
-    background-color: antiquewhite;
+    height: 150px;
+    border: 1px solid lightgreen;
 }
+
+
