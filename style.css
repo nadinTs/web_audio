@@ -1,21 +1,57 @@
-.sp {
-    display: inline-block;
-    width: 500px;
-}
 
-div {
-    display: inline-block;
-    width: 100px;
-    height: 20px;
-    background-color: lightgreen;
-    margin:  50px 20px;
+.player {
+    display: block;
+    background: lightgrey;
+    width: 500px;
+    margin: 10px auto;
+
 }
 
 .visual {
     display: block;
     width: 500px;
     height: 150px;
-    border: 1px solid lightgreen;
+    background-color: black;
+}
+
+.stop_button {
+    padding: 5px 10px;
+    float: left;
+    background-color: darkgray;
+    margin: 10px;
+}
+
+.play_button {
+    padding: 5px 10px;
+    float: left;
+    background-color: darkgray;
+    margin: 10px;
+
+}
+.play_button:hover,
+.stop_button:hover,
+ {
+    background-color: cadetblue;
+}
+
+.download_button {
+    clear: both;
+    display: block;
+    padding: 10px;
+    width: 100%;
+}
+
+.volume {
+    border: 1px solid red;
+    float: right;
+    margin: 10px;
 }
 
 
+.status {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    background-color: darkgray;
+    padding: 10px 0;
+}

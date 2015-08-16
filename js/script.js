@@ -9,7 +9,7 @@
 
     var url = player.dataset['sound'];
     var upload_list = document.querySelector('.upload_list');
-    var audio_item = document.createElement('p');
+    var file_name = '';
 
     var audioCtx = new AudioContext();
     var analyser = audioCtx.createAnalyser();
@@ -37,13 +37,11 @@
 
             reader.addEventListener('load', function(event) {
                 console.log('audio file loaded, decoding...');
-                audio_item.title = file.name;
-                audio_item.innerHTML = file.name;
                 statusText.innerHTML = 'Decoding audio, please wait...';
 
                 audioCtx.decodeAudioData(event.target.result, function (buffer) {
                     console.log('audio decoded.');
-
+                    file_name = file.name;
                     statusText.innerHTML = 'Click play to start.';
                     source.buffer = buffer;
                     source.connect(analyser);
@@ -90,6 +88,7 @@
     playButton.addEventListener("click", function(){
         draw();
         source.start(0);
+        statusText.innerHTML = file_name;
     });
 
     stopButton.addEventListener("click", function(){
@@ -101,9 +100,5 @@
         volume.gain.value = volumeSlider.value;
 
     });
-
-    audio_item.addEventListener("click", function(){
-       source.dataset['sound'] = this.dataset['sound'];
-    });
-
+    
 })();

@@ -9,19 +9,21 @@
 </head>
 
 <body>
+<div class="player">
     <div id="player" data-sound="http://localhost:63342/web_audio/play_list/aleksej_sidor-na_zare_ty_ee_ne_budi-2.mp3">
-        <span class="status">Loading audio, please wait...</span>
-        <button class="play" value="Play">Play</button>
-        <button class="stop" value="Stop">Stop</button>
 
-        <input type="range" min="0" max="5" step="0.1" value="1" data-control="gain"  name="volume1">
+        <canvas id="visual" class="visual"> </canvas>
 
-        <input type="file" name="audio" id="upload_audio">
-        <canvas id="visual" class="visual">
+        <span class="status">Please select file to play</span>
+        <button class="play play_button" value="Play">Play</button>
+        <button class="stop stop_button" value="Stop">Stop</button>
 
-        </canvas>
+        <input class="volume" type="range" min="0" max="5" step="0.1" value="1" data-control="gain"  name="volume1">
+
+        <input class="download_button" type="file" name="audio" id="upload_audio" value="Выберите файл">
 
     </div>
+</div>
     <script src="js/script.js" type="text/javascript"></script>
 </body>
 </html>
